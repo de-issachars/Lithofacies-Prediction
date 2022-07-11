@@ -1,37 +1,47 @@
-from flask import Flask, request, Response
-app = Flask(__name__)
-import jsonpickle
-app = Flask(__name__)
+import imp
+from flask import Flask, render_template, request, redirect, url_for
+import os
+from os.path import join, dirname, realpath
 from Model import get_prediction_csv
-import pickle
-import pandas as pd
-import io, os
 
-@app.route("/predict_csv", methods=['POST', 'GET'])
-def predict():
-    # load csv file
-
-    # run prediction
-    output = get_prediction_csv("Data/CSV_test.csv")
-    
-    # serialize the data into a JSON string
-
-    # return a response with a content type of JSON
-    response = Response(jsonpickle.encode(output, unpicklable=False), mimetype='application/json')
-    return response
+if not os.path.exists("Data/Predicted"):
+    os.mkdir("Data/Predicted")
 
 
-@app.route("/")
-def home():
-    return "LITHOFACIES PREDICTIONS API"
+if not os.path.exists("Data/Uploaded"):
+    os.mkdir("Data/Uploaded")
 
 
-if __name__ == '__main__':
-    while True:
-        try:
-            app.run(host=os.getenv('IP', '0.0.0.0'),port=int(os.getenv('PORT', 16000)))
-        except Exception as e:
-            print(e)
-            print("restart....")
+app = Flask(__name__)
+
+# enable debugging mode
+app.config["DEBUG"] = True
+
+# Upload folder
+UPLOAD_FOLDER = 'Data/Uploaded'
+app.config['UPLOAD_FOLDER'] =  UPLOAD_FOLDER
 
 
+# Root URL
+@app.route('/')
+def index():
+     # Set The upload HTML template '\templates\index.html'
+    return render_template('upload.html')
+
+
+# Get the uploaded files
+@app.route("/", methods=['POST'])
+def uploadFiles():
+    # get the uploaded file
+    uploaded_file = request.files['file']
+    if uploaded_file.filename != '':
+        file_path = os.path.join(app.config['UPLOAD_FOLDER'], uploaded_file.filename)
+        uploaded_file.save(file_path)
+        output = get_prediction_csv(file_path)
+        output.to_csv("Data/Predicted/{}".format(uploaded_file.filename), index=False)
+        with open("Data/Predicted/{}".format(uploaded_file.filename)) as file:
+            return render_template("view_download.html", csv=file)
+        
+
+if (__name__ == "__main__"):
+     app.run(port = 12000)
