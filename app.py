@@ -1,7 +1,5 @@
-import imp
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request
 import os
-from os.path import join, dirname, realpath
 from Model import get_prediction_csv
 
 if not os.path.exists("Data/Predicted"):
