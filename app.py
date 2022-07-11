@@ -5,7 +5,7 @@ app = Flask(__name__)
 from Model import get_prediction_csv
 import pickle
 import pandas as pd
-import io
+import io, os
 
 @app.route("/predict_csv", methods=['POST', 'GET'])
 def predict():
@@ -21,21 +21,14 @@ def predict():
     return response
 
 
-
 @app.route("/")
 def home():
     return "LITHOFACIES PREDICTIONS API"
 
 
-
-
-
-
-import os
 if __name__ == '__main__':
     while True:
         try:
-
             app.run(host=os.getenv('IP', '0.0.0.0'),port=int(os.getenv('PORT', 16000)))
         except Exception as e:
             print(e)
