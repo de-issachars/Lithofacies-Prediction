@@ -1,7 +1,7 @@
-﻿numpy 
-random
+﻿numpy
 pandas 
-xgboost
+xgboost==0.90
 sklearn
-pickle
+flask
+jsonpickle
 
