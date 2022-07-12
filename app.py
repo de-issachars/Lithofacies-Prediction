@@ -2,6 +2,9 @@ from flask import Flask, render_template, request
 import os
 from Model import get_prediction_csv
 
+if not os.path.exists("Data"):
+    os.mkdir("Data")
+
 if not os.path.exists("Data/Predicted"):
     os.mkdir("Data/Predicted")
 
