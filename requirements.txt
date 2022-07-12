@@ -1,4 +1,4 @@
-﻿pandas==1.4.3
+﻿pandas
 xgboost==0.90
 sklearn
 jsonpickle==2.2.0
