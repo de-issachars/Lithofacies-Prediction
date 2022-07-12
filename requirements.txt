@@ -1,6 +1,6 @@
 ﻿pandas==1.4.3
 xgboost==0.90
-sklearn==0.0.1
+sklearn
 jsonpickle==2.2.0
 certifi==2019.3.9
 chardet==3.0.4
