@@ -15,6 +15,7 @@ model.load_model('Model/model_lithoPred.json')
 def get_prediction_csv(file):
     # file = open(filepath, "r")
     df = pd.read_csv(file, sep =";")
+    original_df = df.copy()
     # Encoding Categorical Variables
     df['GROUP_encoded'] = df['GROUP'].astype('category')
     df['GROUP_encoded'] = df['GROUP_encoded'].cat.codes 
@@ -52,4 +53,4 @@ def get_prediction_csv(file):
     values = ['Sandstone', 'Sandstone/Shale', 'Shale', 'Marl','Dolomite', 
               'Limestone', 'Chalk', 'Halite','Anhydrite', 'Tuff', 'Coal', 'Basement']
     result_df['PredictedFacies'] = np.select(conditions, values)
-    return result_df
+    return pd.concat([original_df, result_df], axis=1)
