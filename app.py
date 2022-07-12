@@ -3,14 +3,13 @@ import os
 from Model import get_prediction_csv
 
 if not os.path.exists("Data"):
-    os.mkdir("Data")
+    os.mkdirs("Data",exist_ok=True)
 
 if not os.path.exists("Data/Predicted"):
-    os.mkdir("Data/Predicted")
-
+    os.mkdirs("Data/Predicted", exist_ok=True)
 
 if not os.path.exists("Data/Uploaded"):
-    os.mkdir("Data/Uploaded")
+    os.mkdirs("Data/Uploaded",   exist_ok=True)
 
 
 app = Flask(__name__)
